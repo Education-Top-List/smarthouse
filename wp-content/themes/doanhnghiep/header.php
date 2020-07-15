@@ -48,26 +48,7 @@
 						<?php } ?>
 					</div>
 				</div>
-				<div class="phone_search_hd">
-					<div class="search_header">
-						<form  role="search" method="get" id="searchform" action="<?php echo home_url('/');  ?>">
-							<div class="wrap_search_header">
-								<input type="text" value="" name="s" id="s" placeholder="Tìm kiếm">
-								<button type="submit" id="searchsubmit"><i class="fa fa-search"></i></button>
-							</div>
-						</form>
-					</div>
-					<?php if(get_option('phone')){ ?>			
-						<div class="phone_hd">
-							<a href="tel:<?php echo get_option('phone'); ?>"><?php echo get_option('phone'); ?></a>
-						</div>
-					<?php }?>
-				</div>
-			</div>
-		</div>
-		<div class="middle_header">
-			<div class="container">
-				<nav class="nav nav_primary">
+					<nav class="nav nav_primary">
 					<?php 
 					$args = array('theme_location' => 'primary');
 					?>

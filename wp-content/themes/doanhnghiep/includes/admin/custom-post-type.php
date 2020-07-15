@@ -107,16 +107,16 @@
 
 	/* MANG LUOI */
 
-	add_action( 'init', 'mangluoi_custom_post_type' );
-	add_filter('manage_mangluoi_posts_columns','mangluoi_columns');
-	add_action('manage_mangluoi_posts_custom_column','mangluoi_custom_column',10,2);
+	add_action( 'init', 'tgslide_custom_post_type' );
+	add_filter('manage_tgslide_posts_columns','tgslide_columns');
+	add_action('manage_tgslide_posts_custom_column','tgslide_custom_column',10,2);
 
-	function mangluoi_custom_post_type() {
+	function tgslide_custom_post_type() {
 		$labels = array(
-			'name' 				=> 'Mạng lưới',
-			'singular_name' 	=> 'Mạng lưới',
-			'menu_name'			=> 'Mạng lưới',
-			'name_admin_bar'	=> 'Mạng lưới'
+			'name' 				=> 'Slide',
+			'singular_name' 	=> 'Slide',
+			'menu_name'			=> 'Slide',
+			'name_admin_bar'	=> 'Slide'
 		);
 
 		$args = array(
@@ -134,27 +134,18 @@
 		'publicly_queryable' => true, // permalink
 		'supports'			=> array( 'title', 'thumbnail' , 'excerpt' , 'editor' )
 	);
-		register_taxonomy(
-			'mang_luoi',
-			'mangluoi',
-			array(
-			  'label' => __( 'Category' ),
-            'rewrite' => array( 'slug' => 'mang_luoi' ),
-            'hierarchical' => true,
-		)
-		);
-		register_post_type( 'mangluoi', $args );
+		register_post_type( 'tgslide', $args );
 
 	}
 
-	function mangluoi_columns($columns){
+	function tgslide_columns($columns){
 		$newColumns = array();
 		$newColums['title'] = 'Title';
 		$newColums['avatar'] = 'Avatar';
 		return $newColums;
 	}
 
-	function mangluoi_custom_column($column,$post_id){
+	function tgslide_custom_column($column,$post_id){
 		switch ($column) {
 			case 'avatar':
 			echo get_the_post_thumbnail();
