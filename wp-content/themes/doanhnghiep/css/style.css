@@ -436,7 +436,7 @@ span.woocommerce-Price-amount{
      color: #000;
      font-weight: 700;
      transition: all 0.3s;
-     font-size: 13px;
+     font-size: 15px;
      text-transform: uppercase;
      font-family: 'Roboto', sans-serif;
      border-radius: 0px;
@@ -630,9 +630,9 @@ article.post{
      max-width: 100%;
      height:auto;
 }
-.nav_primary{
+.wrap_nav_hd{
      float: right;
-     margin: 0px;
+     margin: 25px 0px 0px 0px;
 }
 .search_header{
      float: left;
@@ -1361,6 +1361,14 @@ body.search-results .title_header strong{
 /* end page-template-page-template-lienhe */
 
 /* css rau*/
+
+#video_home{
+     position: relative;
+     
+}
+#video_home .wp-video{
+     width: 100% !important
+}
 .title_archives{
      margin:0px 0px 30px 0px;
 }

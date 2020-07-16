@@ -12,9 +12,11 @@
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/animate.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/font-awesome.min.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/bootstrap.min.css">
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/owl.carousel.min.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css">
 	<!-- js -->
 	<script src="<?php echo BASE_URL; ?>/js/jquery.min.js"></script>
+	
 	<?php wp_head(); ?>
 </head>
 
@@ -48,17 +50,20 @@
 						<?php } ?>
 					</div>
 				</div>
-				<nav class="nav nav_primary">
+				<div class="wrap_nav_hd">
+					<nav class="nav nav_primary">
 					<?php 
 					$args = array('theme_location' => 'primary');
 					?>
 					<?php wp_nav_menu($args); ?>
 				</nav>
+				</div>
+				
 			</div>
 		</div>
 		<?php if(is_front_page() && !is_home()){ ?>
 			<div class="slide_hd">
-				<ul>
+				<ul class="owl-carousel">
 					<?php
 					$args = array(  
 						'post_type' => 'tgslide',
@@ -79,7 +84,7 @@
 						</li> 
 						<?php
 					endwhile;
-					wp_reset_query();
+					wp_reset_postdata();
 					?>
 				</ul>
 			</div>	

@@ -42,6 +42,7 @@
 	<script src="<?php echo BASE_URL; ?>/js/wow.min.js"></script>
 	<script src="<?php echo BASE_URL; ?>/js/slick.js"></script>
 	<script src="<?php echo BASE_URL; ?>/js/bootstrap.min.js"></script>
+	<script src="<?php echo BASE_URL; ?>/js/owl.carousel.min.js"></script>
 	<script src="<?php echo BASE_URL; ?>/js/custom.js"></script>
 </body>
 </html>

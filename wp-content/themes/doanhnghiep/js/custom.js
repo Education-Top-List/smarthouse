@@ -1,4 +1,26 @@
 jQuery(document).ready(function(){
+
+	$('.slide_hd ul').owlCarousel({
+			loop:true,
+			margin:0,
+			nav:false,
+			dots:false,
+			autoplay: true,
+			autoplayTimeout : 10000,
+			smartSpeed : 1000,
+			responsive:{
+				0:{
+					items:1
+				},
+				600:{
+					items:1
+				},
+				1000:{
+					items:1
+				}
+			}
+		});
+
 				// SCROLL TO DIV
 				jQuery(window).scroll(function(){
 					if(jQuery(this).scrollTop()>500){

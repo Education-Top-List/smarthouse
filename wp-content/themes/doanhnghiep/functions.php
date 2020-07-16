@@ -1,8 +1,13 @@
 <?php
-define('BASE_URL', get_template_directory_uri());
+define("BASE_URL", get_template_directory_uri());
 include get_template_directory().'/includes/admin/function-admin.php';
-include get_template_directory().'/includes/admin/custom-post-type.php';  
-//include get_template_directory().'/includes/admin/aio-list-categories/aio-list-category.php';  
+include get_template_directory().'/includes/admin/custom-post-type.php';
+include get_template_directory().'/includes/admin/add_meta_box.php';
+include get_template_directory().'/includes/admin/aio-list-categories/aio-list-category.php';
+include get_template_directory().'/includes/frontend/woocommerce/woocommerce.php';
+include get_template_directory().'/includes/frontend/woocommerce/archive.php';
+//include get_template_directory().'/includes/frontend/woocommerce/add_meta_box.php';
+include get_template_directory().'/includes/frontend/woocommerce/single-product.php';
 
 function load_admin_style() {
   wp_register_style( 'admin_css', get_template_directory_uri() . '/css/admin.css', false, '1.0.0' );
@@ -48,15 +53,30 @@ function excerpt($limit) {
   $excerpt = preg_replace('`\[[^\]]*\]`','',$excerpt);
   return $excerpt;
 }
+
+function trim_the_content($limit) {
+  $trim_content = explode(' ', get_the_content(), $limit);
+  if (count($trim_content)>=$limit) {
+    array_pop($trim_content);
+    $trim_content = implode(" ",$trim_content).'...';
+  } else {
+    $trim_content = implode(" ",$trim_content);
+  } 
+  $trim_content = preg_replace('`\[[^\]]*\]`','',$trim_content);
+  return $trim_content;
+}
   // ADD FEATURED IMAGE SUPPORT
 function featured_images_setup(){
   add_theme_support('post-thumbnails');
+  add_image_size( 'thumbnail',300, 250, true ); //thumbnail
+    add_image_size( 'medium', 600, 400, true ); //medium
+    add_image_size( 'large', 1200, 800, true ); //large
   }
   add_action('after_setup_theme','featured_images_setup');
-
+  // ADD POST FORMAT SUPPORT
+  add_theme_support('post-formats',array('aside','gallery','link'));
   // ADD OUR WIDGETS LOCATION
   function our_widget_inits(){
-
     register_sidebar(array(
       'name' => 'Sidebar',
       'id' => 'sidebar1',
@@ -77,6 +97,13 @@ function featured_images_setup(){
     'before_title' => '<h3 class="widget-title">',
     'after_title' => '</h3>',
   ));
+   register_sidebar(array(
+    'name' => 'Footer area 3',
+    'id' => 'footer3',
+    'before_title' => '<h3 class="widget-title">',
+    'after_title' => '</h3>',
+  ));
+
   }
   add_action('widgets_init','our_widget_inits');
   /** Filter & Hook In Widget Before Post Content .*/
@@ -89,17 +116,15 @@ function featured_images_setup(){
     }
   }
   add_action( 'woo_loop_before', 'before_post_widget' );
-// ADD THEME CUSTOM LOGO
   add_theme_support( 'custom-logo' );
 //  ADD BREADCRUMB
   function the_breadcrumb() {
-     
+
     if (!is_front_page()) {
-      echo '<ul>';
       echo '<li><a href="';
       echo home_url();
       echo '">';
-      if(get_locale() == 'en_US'){ echo 'Home';} else{ echo 'Trang chủ ';}
+      echo 'Trang chủ ';
       echo "</a><li>";
       if (is_category() || is_single()) {
         echo '';
@@ -116,7 +141,6 @@ function featured_images_setup(){
       } elseif (is_home()) {
         echo wp_title('');
       }
-      echo '</ul>';
     }
     elseif (is_tag()) {single_tag_title();}
     elseif (is_day()) {echo"Archive for "; the_time('F jS, Y'); echo'';}
@@ -238,8 +262,7 @@ function rd_duplicate_post_link( $actions, $post ) {
 
 add_filter( 'post_row_actions', 'rd_duplicate_post_link', 10, 2 );
 // duplicate page
-//add_filter('page_row_actions', 'rd_duplicate_post_link', 10, 2);
-
+add_filter('page_row_actions', 'rd_duplicate_post_link', 10, 2);
 
 // REMOVE CSS WP_HEAD
 //xoa header
@@ -254,8 +277,25 @@ remove_action('wp_head', 'adjacent_posts_rel_link_wp_head');
 // Keep old Editor
    add_filter('use_block_editor_for_post', '__return_false');
 
-// Remove description heading in tabs content
-  add_filter('woocommerce_product_description_heading', '__return_null');
+// Email ctm
+add_filter( 'woocommerce_email_recipient_new_order', 'custom_new_order_email_recipient', 10, 2 );
+function custom_new_order_email_recipient( $recipient, $order ) {
+    // Avoiding backend displayed error in Woocommerce email settings for undefined $order
+    if ( ! is_a( $order, 'WC_Order' ) ) 
+        return $recipient;
+
+    // Check order items for a shipped product is in the order   
+    foreach ( $order->get_items() as $item ) {
+        $product = $item->get_product(); // Get WC_Product instance Object
+
+        // When a product needs shipping we add the customer email to email recipients
+        if ( $product->needs_shipping() ) {
+            return $recipient . ',' . $order->get_billing_email();
+        }
+    }
+    return $recipient;
+}
+
 
 
 /* WRAP IMAGE POST CONTENT WITH FIGURE*/
@@ -264,319 +304,38 @@ function filter_images($content){
 }
 add_filter('the_content', 'filter_images');
 /* END WRAP IMAGE POST CONTENT WITH FIGURE*/
+add_filter( 'widget_text', 'do_shortcode' );
 
-/* REMOVE EMPTY P */
 
-add_filter('the_content', 'remove_empty_p', 20, 1);
-function remove_empty_p($content){
-    $content = force_balance_tags($content);
-    return preg_replace('#<p>\s*+(<br\s*/*>)?\s*</p>#i', '', $content);
-}
+// hide coupon field on cart page
+function hide_coupon_field_on_cart( $enabled ) {
 
-//SHOW POST COUNT VIEWS 
-function wpb_set_post_views($postID) {
-    $count_key = 'wpb_post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
-    if($count==''){
-        $count = 1;
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, '1');
-    }else{
-        $count++;
-        update_post_meta($postID, $count_key, $count);
-    }
-}
-
-function wpb_get_post_views($postID){
-    $count_key = 'wpb_post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
-    if($count==''){
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, '1');
-        return "1";
-    }
-    return $count.'';
-}
-if ( !function_exists( 'add_action' ) ) { exit; 
-}
-function VelvetBluesUU_add_management_page(){
-  add_management_page("Velvet Blues Update URLs", "Update URLs", "manage_options", basename(__FILE__), "VelvetBluesUU_management_page");
-}
-function VelvetBluesUU_load_textdomain(){
-  load_plugin_textdomain( 'velvet-blues-update-urls', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-}
-function VelvetBluesUU_management_page(){
-  if ( !function_exists( 'VB_update_urls' ) ) {
-    function VB_update_urls($options,$oldurl,$newurl){  
-      global $wpdb;
-      $results = array();
-      $queries = array(
-      'content' =>    array("UPDATE $wpdb->posts SET post_content = replace(post_content, %s, %s)",  __('Content Items (Posts, Pages, Custom Post Types, Revisions)','velvet-blues-update-urls') ),
-      'excerpts' =>   array("UPDATE $wpdb->posts SET post_excerpt = replace(post_excerpt, %s, %s)", __('Excerpts','velvet-blues-update-urls') ),
-      'attachments' =>  array("UPDATE $wpdb->posts SET guid = replace(guid, %s, %s) WHERE post_type = 'attachment'",  __('Attachments','velvet-blues-update-urls') ),
-      'links' =>      array("UPDATE $wpdb->links SET link_url = replace(link_url, %s, %s)", __('Links','velvet-blues-update-urls') ),
-      'custom' =>     array("UPDATE $wpdb->postmeta SET meta_value = replace(meta_value, %s, %s)",  __('Custom Fields','velvet-blues-update-urls') ),
-      'guids' =>      array("UPDATE $wpdb->posts SET guid = replace(guid, %s, %s)",  __('GUIDs','velvet-blues-update-urls') )
-      );
-      foreach($options as $option){
-        if( $option == 'custom' ){
-          $n = 0;
-          $row_count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->postmeta" );
-          $page_size = 10000;
-          $pages = ceil( $row_count / $page_size );
-          
-          for( $page = 0; $page < $pages; $page++ ) {
-            $current_row = 0;
-            $start = $page * $page_size;
-            $end = $start + $page_size;
-            $pmquery = "SELECT * FROM $wpdb->postmeta WHERE meta_value <> ''";
-            $items = $wpdb->get_results( $pmquery );
-            foreach( $items as $item ){
-            $value = $item->meta_value;
-            if( trim($value) == '' )
-              continue;
-            
-              $edited = VB_unserialize_replace( $oldurl, $newurl, $value );
-            
-              if( $edited != $value ){
-                $fix = $wpdb->query("UPDATE $wpdb->postmeta SET meta_value = '".$edited."' WHERE meta_id = ".$item->meta_id );
-                if( $fix )
-                  $n++;
-              }
-            }
-          }
-          $results[$option] = array($n, $queries[$option][1]);
-        }
-        else{
-          $result = $wpdb->query( $wpdb->prepare( $queries[$option][0], $oldurl, $newurl) );
-          $results[$option] = array($result, $queries[$option][1]);
-        }
-      }
-      return $results;      
-    }
+  if ( is_cart() ) {
+    $enabled = false;
   }
-  if ( !function_exists( 'VB_unserialize_replace' ) ) {
-    function VB_unserialize_replace( $from = '', $to = '', $data = '', $serialised = false ) {
-      try {
-        if ( false !== is_serialized( $data ) ) {
-          $unserialized = unserialize( $data );
-          $data = VB_unserialize_replace( $from, $to, $unserialized, true );
-        }
-        elseif ( is_array( $data ) ) {
-          $_tmp = array( );
-          foreach ( $data as $key => $value ) {
-            $_tmp[ $key ] = VB_unserialize_replace( $from, $to, $value, false );
-          }
-          $data = $_tmp;
-          unset( $_tmp );
-        }
-        else {
-          if ( is_string( $data ) )
-            $data = str_replace( $from, $to, $data );
-        }
-        if ( $serialised )
-          return serialize( $data );
-      } catch( Exception $error ) {
-      }
-      return $data;
-    }
-  }
-  if ( isset( $_POST['VBUU_settings_submit'] ) && !check_admin_referer('VBUU_submit','VBUU_nonce')){
-    if(isset($_POST['VBUU_oldurl']) && isset($_POST['VBUU_newurl'])){
-      if(function_exists('esc_attr')){
-        $vbuu_oldurl = esc_attr(trim($_POST['VBUU_oldurl']));
-        $vbuu_newurl = esc_attr(trim($_POST['VBUU_newurl']));
-      }else{
-        $vbuu_oldurl = attribute_escape(trim($_POST['VBUU_oldurl']));
-        $vbuu_newurl = attribute_escape(trim($_POST['VBUU_newurl']));
-      }
-    }
-    echo '<div id="message" class="error fade"><p><strong>'.__('ERROR','velvet-blues-update-urls').' - '.__('Please try again.','velvet-blues-update-urls').'</strong></p></div>';
-  }
-  elseif( isset( $_POST['VBUU_settings_submit'] ) && !isset( $_POST['VBUU_update_links'] ) ){
-    if(isset($_POST['VBUU_oldurl']) && isset($_POST['VBUU_newurl'])){
-      if(function_exists('esc_attr')){
-        $vbuu_oldurl = esc_attr(trim($_POST['VBUU_oldurl']));
-        $vbuu_newurl = esc_attr(trim($_POST['VBUU_newurl']));
-      }else{
-        $vbuu_oldurl = attribute_escape(trim($_POST['VBUU_oldurl']));
-        $vbuu_newurl = attribute_escape(trim($_POST['VBUU_newurl']));
-      }
-    }
-    echo '<div id="message" class="error fade"><p><strong>'.__('ERROR','velvet-blues-update-urls').' - '.__('Your URLs have not been updated.','velvet-blues-update-urls').'</p></strong><p>'.__('Please select at least one checkbox.','velvet-blues-update-urls').'</p></div>';
-  }
-  elseif( isset( $_POST['VBUU_settings_submit'] ) ){
-    $vbuu_update_links = $_POST['VBUU_update_links'];
-    if(isset($_POST['VBUU_oldurl']) && isset($_POST['VBUU_newurl'])){
-      if(function_exists('esc_attr')){
-        $vbuu_oldurl = esc_attr(trim($_POST['VBUU_oldurl']));
-        $vbuu_newurl = esc_attr(trim($_POST['VBUU_newurl']));
-      }else{
-        $vbuu_oldurl = attribute_escape(trim($_POST['VBUU_oldurl']));
-        $vbuu_newurl = attribute_escape(trim($_POST['VBUU_newurl']));
-      }
-    }
-    if(($vbuu_oldurl && $vbuu_oldurl != 'http://www.oldurl.com' && trim($vbuu_oldurl) != '') && ($vbuu_newurl && $vbuu_newurl != 'http://www.newurl.com' && trim($vbuu_newurl) != '')){
-      $results = VB_update_urls($vbuu_update_links,$vbuu_oldurl,$vbuu_newurl);
-      $empty = true;
-      $emptystring = '<strong>'.__('Why do the results show 0 URLs updated?','velvet-blues-update-urls').'</strong><br/>'.__('This happens if a URL is incorrect OR if it is not found in the content. Check your URLs and try again.','velvet-blues-update-urls').'<br/><br/><strong>'.__('Want us to do it for you?','velvet-blues-update-urls').'</strong><br/>'.__('Contact us at','velvet-blues-update-urls').' <a href="mailto:info@velvetblues.com?subject=Move%20My%20WP%20Site">info@velvetblues.com</a>. '.__('We will backup your website and move it for $75 OR simply update your URLs for only $39.','velvet-blues-update-urls');
 
-      $resultstring = '';
-      foreach($results as $result){
-        $empty = ($result[0] != 0 || $empty == false)? false : true;
-        $resultstring .= '<br/><strong>'.$result[0].'</strong> '.$result[1];
-      }
-      
-      if( $empty ):
-      ?>
-<div id="message" class="error fade">
-<table>
-<tr>
-  <td><p><strong>
-      <?php _e('ERROR: Something may have gone wrong.','velvet-blues-update-urls'); ?>
-      </strong><br/>
-      <?php _e('Your URLs have not been updated.','velvet-blues-update-urls'); ?>
-    </p>
-    <?php
-      else:
-      ?>
-    <div id="message" class="updated fade">
-      <table>
-        <tr>
-          <td><p><strong>
-              <?php _e('Success! Your URLs have been updated.','velvet-blues-update-urls'); ?>
-              </strong></p>
-            <?php
-      endif;
-      ?>
-            <p><u>
-              <?php _e('Results','velvet-blues-update-urls'); ?>
-              </u><?php echo $resultstring; ?></p>
-            <?php echo ($empty)? '<p>'.$emptystring.'</p>' : ''; ?></td>
-          <td width="60"></td>
-          <td align="center"><?php if( !$empty ): ?>
-            <p>
-              <?php //You can now uninstall this plugin.<br/> ?>
-              <?php printf(__('If you found our plugin useful, %s please consider donating','velvet-blues-update-urls'),'<br/>'); ?>.</p>
-            <p><a style="outline:none;" href="http://www.velvetblues.com/go/updateurlsdonate/" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" alt="PayPal -<?php _e('The safer, easier way to pay online!','velvet-blues-update-urls'); ?>"></a></p>
-            <?php endif; ?></td>
-        </tr>
-      </table>
-    </div>
-    <?php
-    }
-    else{
-      echo '<div id="message" class="error fade"><p><strong>'.__('ERROR','velvet-blues-update-urls').' - '.__('Your URLs have not been updated.','velvet-blues-update-urls').'</p></strong><p>'.__('Please enter values for both the old url and the new url.','velvet-blues-update-urls').'</p></div>';
-    }
-  }
-?>
-    <div class="wrap">
-    <h2>Velvet Blues Update URLs</h2>
-    <form method="post" action="tools.php?page=<?php echo basename(__FILE__); ?>">
-      <?php wp_nonce_field('VBUU_submit','VBUU_nonce'); ?>
-      <p><?php printf(__("After moving a website, %s lets you fix old URLs in content, excerpts, links, and custom fields.",'velvet-blues-update-urls'),'<strong>Update URLs</strong>'); ?></p>
-      <p><strong>
-        <?php _e('WE RECOMMEND THAT YOU BACKUP YOUR WEBSITE.','velvet-blues-update-urls'); ?>
-        </strong><br/>
-        <?php _e('You may need to restore it if incorrect URLs are entered in the fields below.','velvet-blues-update-urls'); ?>
-      </p>
-      <h3 style="margin-bottom:5px;">
-        <?php _e('Step'); ?>
-        1:
-        <?php _e('Enter your URLs in the fields below','velvet-blues-update-urls'); ?>
-      </h3>
-      <table class="form-table">
-        <tr valign="middle">
-          <th scope="row" width="140" style="width:140px"><strong>
-            <?php _e('Old URL','velvet-blues-update-urls'); ?>
-            </strong><br/>
-            <span class="description">
-            <?php _e('Old Site Address','velvet-blues-update-urls'); ?>
-            </span></th>
-          <td><input name="VBUU_oldurl" type="text" id="VBUU_oldurl" value="<?php echo (isset($vbuu_oldurl) && trim($vbuu_oldurl) != '')? $vbuu_oldurl : 'http://www.oldurl.com'; ?>" style="width:300px;font-size:20px;" onfocus="if(this.value=='http://www.oldurl.com') this.value='';" onblur="if(this.value=='') this.value='http://www.oldurl.com';" /></td>
-        </tr>
-        <tr valign="middle">
-          <th scope="row" width="140" style="width:140px"><strong>
-            <?php _e('New URL','velvet-blues-update-urls'); ?>
-            </strong><br/>
-            <span class="description">
-            <?php _e('New Site Address','velvet-blues-update-urls'); ?>
-            </span></th>
-          <td><input name="VBUU_newurl" type="text" id="VBUU_newurl" value="<?php echo (isset($vbuu_newurl) && trim($vbuu_newurl) != '')? $vbuu_newurl : 'http://www.newurl.com'; ?>" style="width:300px;font-size:20px;" onfocus="if(this.value=='http://www.newurl.com') this.value='';" onblur="if(this.value=='') this.value='http://www.newurl.com';" /></td>
-        </tr>
-      </table>
-      <br/>
-      <h3 style="margin-bottom:5px;">
-        <?php _e('Step'); ?>
-        2:
-        <?php _e('Choose which URLs should be updated','velvet-blues-update-urls'); ?>
-      </h3>
-      <table class="form-table">
-        <tr>
-          <td><p style="line-height:20px;">
-              <input name="VBUU_update_links[]" type="checkbox" id="VBUU_update_true" value="content" checked="checked" />
-              <label for="VBUU_update_true"><strong>
-                <?php _e('URLs in page content','velvet-blues-update-urls'); ?>
-                </strong> (
-                <?php _e('posts, pages, custom post types, revisions','velvet-blues-update-urls'); ?>
-                )</label>
-              <br/>
-              <input name="VBUU_update_links[]" type="checkbox" id="VBUU_update_true1" value="excerpts" />
-              <label for="VBUU_update_true1"><strong>
-                <?php _e('URLs in excerpts','velvet-blues-update-urls'); ?>
-                </strong></label>
-              <br/>
-              <input name="VBUU_update_links[]" type="checkbox" id="VBUU_update_true2" value="links" />
-              <label for="VBUU_update_true2"><strong>
-                <?php _e('URLs in links','velvet-blues-update-urls'); ?>
-                </strong></label>
-              <br/>
-              <input name="VBUU_update_links[]" type="checkbox" id="VBUU_update_true3" value="attachments" />
-              <label for="VBUU_update_true3"><strong>
-                <?php _e('URLs for attachments','velvet-blues-update-urls'); ?>
-                </strong> (
-                <?php _e('images, documents, general media','velvet-blues-update-urls'); ?>
-                )</label>
-              <br/>
-              <input name="VBUU_update_links[]" type="checkbox" id="VBUU_update_true4" value="custom" />
-              <label for="VBUU_update_true4"><strong>
-                <?php _e('URLs in custom fields and meta boxes','velvet-blues-update-urls'); ?>
-                </strong></label>
-              <br/>
-              <input name="VBUU_update_links[]" type="checkbox" id="VBUU_update_true5" value="guids" />
-              <label for="VBUU_update_true5"><strong>
-                <?php _e('Update ALL GUIDs','velvet-blues-update-urls'); ?>
-                </strong> <span class="description" style="color:#f00;">
-                <?php _e('GUIDs for posts should only be changed on development sites.','velvet-blues-update-urls'); ?>
-                </span> <a href="http://codex.wordpress.org/Changing_The_Site_URL#Important_GUID_Note" target="_blank">
-                <?php _e('Learn More.','velvet-blues-update-urls'); ?>
-                </a></label>
-            </p></td>
-        </tr>
-      </table>
-      <p>
-        <input class="button-primary" name="VBUU_settings_submit" value="<?php _e('Update URLs NOW','velvet-blues-update-urls'); ?>" type="submit" />
-      </p>
-    </form>
-    <p>&nbsp;<br/>
-      <strong>
-      <?php _e('Need help?','velvet-blues-update-urls'); ?>
-      </strong> <?php printf(__("Get support at the %s plugin page%s.",'velvet-blues-update-urls'),'<a href="http://www.velvetblues.com/web-development-blog/wordpress-plugin-update-urls/" target="_blank">Velvet Blues Update URLs','</a>'); ?>
-      <?php if( !isset( $empty ) ): ?>
-      <br/>
-      <strong>
-      <?php _e('Want us to do it for you?','velvet-blues-update-urls'); ?>
-      </strong>
-      <?php _e('Contact us at','velvet-blues-update-urls'); ?>
-      <a href="mailto:info@velvetblues.com?subject=Move%20My%20WP%20Site">info@velvetblues.com</a>.
-      <?php _e('We will backup your website and move it for $75 OR update your URLs for only $29.','velvet-blues-update-urls'); ?>
-      <?php endif; ?>
-    </p>
-    <?php
+  return $enabled;
 }
-add_action('admin_menu', 'VelvetBluesUU_add_management_page');
-add_action('admin_init','VelvetBluesUU_load_textdomain');
-// END SHOW POST COUNT VIEWS
+add_filter( 'woocommerce_coupons_enabled', 'hide_coupon_field_on_cart' );
+
+// hide coupon field on checkout page
+function hide_coupon_field_on_checkout( $enabled ) {
+
+  if ( is_checkout() ) {
+    $enabled = false;
+  }
+
+  return $enabled;
+}
+add_filter( 'woocommerce_coupons_enabled', 'hide_coupon_field_on_checkout' );
+
+remove_action( 'woocommerce_checkout_order_review', 'woocommerce_order_review', 10 );
+
+add_filter('woocommerce_no_shipping_available_html', '__return_false');
+add_filter('woocommerce_cart_no_shipping_available_html', '__return_false');
 
 
- 
+// shor check out form event cart empty
+add_filter( 'woocommerce_checkout_redirect_empty_cart', '__return_false' );
+add_filter( 'woocommerce_checkout_update_order_review_expired', '__return_false' );
+
