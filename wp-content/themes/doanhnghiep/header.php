@@ -48,7 +48,7 @@
 						<?php } ?>
 					</div>
 				</div>
-					<nav class="nav nav_primary">
+				<nav class="nav nav_primary">
 					<?php 
 					$args = array('theme_location' => 'primary');
 					?>
@@ -56,7 +56,32 @@
 				</nav>
 			</div>
 		</div>
-		<!-- <?php if(is_front_page() && !is_home()){ ?>
-			<?php echo do_shortcode('[smartslider3 slider=2]'); ?>
-		<?php }?> -->
+		<?php if(is_front_page() && !is_home()){ ?>
+			<div class="slide_hd">
+				<ul>
+					<?php
+					$args = array(  
+						'post_type' => 'tgslide',
+						'post_status' => 'publish',
+						'posts_per_page' => 20, 
+						'orderby' => 'title', 
+						'order' => 'ASC'
+					);
+
+					$loop_slide = new WP_Query( $args ); 
+
+					while ( $loop_slide->have_posts() ) : $loop_slide->the_post(); 
+    	//echo the_title();
+						?> 
+						<li>
+							<?php $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full' ); ?>
+							<figure class="thumbnail"  style="background:url('<?php echo $image[0]; ?>');"> <a href="<?php echo get_the_excerpt(); ?>" target="_blank"></a> </figure> 
+						</li> 
+						<?php
+					endwhile;
+					wp_reset_query();
+					?>
+				</ul>
+			</div>	
+		<?php }?> 
 	</header>

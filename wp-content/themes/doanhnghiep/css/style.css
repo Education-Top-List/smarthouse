@@ -433,7 +433,7 @@ span.woocommerce-Price-amount{
 .nav_primary ul>li>a{
      display: inline-block;
      padding: 10px 21px;
-     color: #fff;
+     color: #000;
      font-weight: 700;
      transition: all 0.3s;
      font-size: 13px;
@@ -631,7 +631,7 @@ article.post{
      height:auto;
 }
 .nav_primary{
-     float: none;
+     float: right;
      margin: 0px;
 }
 .search_header{
@@ -1368,6 +1368,12 @@ body.search-results .title_header strong{
      border:1px solid #ccc;
      padding:10px;
 } 
+.slide_hd ul li figure{
+     height: 700px;
+     background-size: cover !important;
+     width: 100%;
+     background-position: center center !important;
+}
 /* end css rau*/
 
 /* pagination */
