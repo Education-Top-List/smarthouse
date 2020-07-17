@@ -1,0 +1,8 @@
+2020-07-17T08:07:12+00:00 CRITICAL Uncaught Error: Call to undefined function wpb_set_post_views() in C:\xampp\htdocs\smarthouse\wp-content\themes\doanhnghiep\single-product.php:17
+Stack trace:
+#0 C:\xampp\htdocs\smarthouse\wp-includes\template-loader.php(78): include()
+#1 C:\xampp\htdocs\smarthouse\wp-blog-header.php(19): require_once('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\smarthouse\index.php(17): require('C:\\xampp\\htdocs...')
+#3 {main}
+  thrown in C:\xampp\htdocs\smarthouse\wp-content\themes\doanhnghiep\single-product.php on line 17
+

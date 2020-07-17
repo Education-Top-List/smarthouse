@@ -1,8 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Lobster&display=swap&subset=vietnamese');
-@import url('https://fonts.googleapis.com/css?family=Ranga:400,700&display=swap');
+
 html{
      margin:0px !important;
      padding:0px !important;
@@ -585,7 +582,7 @@ article.post{
      overflow: hidden;
 }
 .nav_primary ul li a:hover{
-     color: #fff;
+     color: #ff2600;
      background: rgba(255, 255, 255, 0.3);
      border-radius: 30px;
 }
@@ -825,7 +822,7 @@ li.widget{
      display: block !important;
 }
 .g_content{
-     margin:40px 0px 0px 0px;
+     margin: 0px;
 }
 
 .home .g_content {
@@ -930,11 +927,12 @@ li.widget{
      padding: 15px 0px;
      background: none;
      margin: 0px;
-     display: none;
+     background: #000;
 }
 .breadcrumb li{
      display: inline;
      line-height: 23px;
+     color: #fff;
 }
 .breadcrumb ul li::after{
      content: "\f105";
@@ -948,7 +946,7 @@ li.widget{
      font-size: 15px;
      line-height: 22px;
      font-weight: normal;
-     color:#000;
+     color: #fff;
 }
 .breadcrumb ul>li:last-child a{
      font-weight: 700;
@@ -1224,7 +1222,7 @@ body.search-results .title_header strong{
    border-top: none;
    margin: 0px;
    position: relative;
-   background: #c5010b;
+   background: #000000;
    padding: 40px 0px;
 }
 .footer .panel-layout>.panel-grid>.panel-grid-cell:nth-child(1) .textwidget figure{
@@ -1361,10 +1359,89 @@ body.search-results .title_header strong{
 /* end page-template-page-template-lienhe */
 
 /* css rau*/
-
+.cat_product_home{
+     padding:50px 0px;
+}
+h2.title_home{
+     color:#ff2600;
+     text-align: center;
+     text-transform: uppercase;
+     font-weight: 700;
+     margin: 0px 0px 25px 0px;
+}
+.certificate .slick-slide{
+     padding:0px 10px;
+}
+.certificate .slick-list{
+     margin:0px -10px;
+}
+.certificate ul li figure img{
+     display: none;
+}
+.certificate ul li figure a{
+     display: block;
+     height: 100%;
+}
+.certificate ul li figure{
+     height: 300px;
+     background-size: contain !important;
+     width: 100%;
+     background-position: center center !important;
+}
+.cat_product_home ul li .banner_category{
+    width: 50%;
+    position: absolute;
+    height: 100%;
+}
+.cat_product_home ul li .banner_category figure{
+     height: 100%;
+     background-size: cover !important;
+     background-position: center center !important;
+     position: absolute;
+     top:0px;
+     left: 0px;
+     width: 100%;
+}
+.cat_product_home ul li .banner_category figure a{
+     display: block;
+     height: 100%;
+}
+.cat_product_home ul li{
+     padding:0px;
+}
+.cat_product_home ul li .tg_info_cat{
+   width: 100%;
+   float: right;
+   background: #070707;
+   display: table;
+   padding:0px 0px 0px 50%;
+   height: 300px;
+}
+.cat_product_home ul li .tg_info_cat a{
+     color:#fff;
+     text-transform: uppercase;
+     font-weight: 700;
+     position: relative;
+     font-size: 19px;
+} 
+.cat_product_home ul>li:nth-child(2) .tg_info_cat a::before{
+     content:url(../images/icon_ctd_while.png);
+     display: block;
+     margin: 0px 0px 5px 0px;
+}
+.cat_product_home ul>li:nth-child(1) .tg_info_cat a::before{
+       content:url(../images/icon_lift_white.png);
+     display: block;
+     margin: 0px 0px 5px 0px;
+}
+.cat_product_home ul li .tg_info_cat .textwidget{
+     display: table-cell;
+     vertical-align: middle;
+     text-align: center;
+     width: 100%;
+}
 #video_home{
      position: relative;
-     
 }
 #video_home .wp-video{
      width: 100% !important
@@ -1554,28 +1631,3 @@ body.search-results .title_header strong{
      animation-iteration-count: infinite;
 }
 
-@-webkit-keyframes color-change {
- 0% { color: #fff; }
- 50% { color: #ffff00; }
- 100% { color: #ffc800; }
-}
-@-moz-keyframes color-change {
-     0% { color: #fff; }
-     50% { color: #ffff00; }
-     100% { color: #ffc800; }
-}
-@-ms-keyframes color-change {
-     0% { color: #fff; }
-     50% { color: #ffff00; }
-     100% { color: #ffc800; }
-}
-@-o-keyframes color-change {
- 0% { color: #fff; }
- 50% { color: #ffff00; }
- 100% { color: #ffc800; }
-}
-@keyframes color-change {
-  0% { color: #fff; }
-  50% { color: #ffff00; }
-  100% { color: #ffc800; }
-}

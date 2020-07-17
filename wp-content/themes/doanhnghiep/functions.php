@@ -2,7 +2,6 @@
 define("BASE_URL", get_template_directory_uri());
 include get_template_directory().'/includes/admin/function-admin.php';
 include get_template_directory().'/includes/admin/custom-post-type.php';
-include get_template_directory().'/includes/admin/add_meta_box.php';
 include get_template_directory().'/includes/admin/aio-list-categories/aio-list-category.php';
 include get_template_directory().'/includes/frontend/woocommerce/woocommerce.php';
 include get_template_directory().'/includes/frontend/woocommerce/archive.php';
@@ -118,8 +117,9 @@ function featured_images_setup(){
   add_action( 'woo_loop_before', 'before_post_widget' );
   add_theme_support( 'custom-logo' );
 //  ADD BREADCRUMB
-  function the_breadcrumb() {
-
+  function the_breadcrumb() { ?>
+    <ul>
+    <?php
     if (!is_front_page()) {
       echo '<li><a href="';
       echo home_url();
@@ -149,8 +149,11 @@ function featured_images_setup(){
     elseif (is_author()) {echo"Author Archive"; echo'';}
     elseif (isset($_GET['paged']) && !empty($_GET['paged'])) {echo "Blog Archives"; echo'';}
     elseif (is_search()) {echo"Search Results"; echo'';}
-
+  ?>
+  </ul>
+  <?php
   }
+
 //  END BREADCRUMB
 
 /*

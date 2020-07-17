@@ -155,3 +155,6 @@ function wh_save_taxonomy_custom_meta($term_id) {
 }
 
 add_action('edited_product_cat', 'wh_save_taxonomy_custom_meta', 10, 1);
+
+
+

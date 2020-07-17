@@ -15,6 +15,7 @@ get_header();
 			endif;
 			?>
 			<div class="cat_product_home">
+				<h2 class="title_home">Sản phẩm</h2>
 				<?php 
 				$cat_args = array(
 					'orderby'    => 'name',
@@ -24,12 +25,17 @@ get_header();
 				$product_categories = get_terms( 'product_cat', $cat_args );
 
 				if( !empty($product_categories) ){?>
-					<ul>
+					<ul class="row">
 						<?php foreach ($product_categories as  $category) { ?>
-							<li>
-								<div class="banner_category pw">
+							<?php 
+							$category_id = $category->term_id;
+							$hide_cat_sub = get_term_meta($category_id, 'wh_meta_desc', true); 
+							if($hide_cat_sub == false){
+							?>
+							<li class="col-sm-6">
+								<div class="banner_category">
 						  					<?php 
-						  					$category_id = $category->term_id;
+						  					
 						  					$thumbnail_id = get_term_meta( $category_id, 'thumbnail_id', true );
 						  					$image = wp_get_attachment_url( $thumbnail_id );
 						  					?>
@@ -39,15 +45,20 @@ get_header();
 						  					<!-- $cat->count -->
 						  		</div>
 						  		<div class="tg_info_cat">
-						  			<a href="<?php echo get_term_link($category);?>"><?php echo $category->name; ?></a>
+						  			<div class="textwidget">
+						  				<a href="<?php echo get_term_link($category);?>"><?php echo $category->name; ?></a>
+						  			</div>
+						  			
 						  		</div>
 							</li>
+							<?php } ?>
 						<?php } ?>
 					</ul>
 				<?php }?>
 				</div>
 				<div class="certificate">
 					<div class="container">
+						<h2 class="title_home">Chứng nhận</h2>
 						<ul>
 							<?php
 							$args = array(  
@@ -65,7 +76,9 @@ get_header();
 								?> 
 								<li>
 									<?php $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full' ); ?>
-									<figure class="thumbnail" > <?php  the_post_thumbnail(); ?></figure> 
+									<figure class="thumbnail"  style="background:url('<?php echo $image[0]; ?>')"> 
+										<a href="<?php echo $image[0]; ?>" data-fancybox="images" class="fancybox"><?php the_post_thumbnail(); ?></a>
+									</figure> 
 								</li> 
 								<?php
 							endwhile;

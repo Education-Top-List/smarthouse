@@ -6,6 +6,11 @@ get_header();
 ?>	
 <div class="page-wrapper">
 	<div class="g_content">
+        <div class="breadcrumb" id="breadcrumb">
+            <div class="container">
+                <?php the_breadcrumb(); ?>
+            </div>
+        </div>
 		<div class="container"> 
 	 <?php
     while ( have_posts() ) : the_post(); ?> <!--Because the_content() works only inside a WP Loop -->
@@ -14,7 +19,6 @@ get_header();
         </div>
     <?php
     endwhile; 
-    wp_reset_query(); //resetting the page query
     ?>
 		</div><!-- container -->
 	</div>
