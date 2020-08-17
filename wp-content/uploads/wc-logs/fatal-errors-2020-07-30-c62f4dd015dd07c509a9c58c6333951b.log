@@ -1,0 +1,4 @@
+2020-07-30T16:33:47+00:00 CRITICAL Cannot redeclare sunset_set_contact_columns() (previously declared in /home/fmocs1df/smarthouse.asia/DocumentRoot/wp-content/themes/doanhnghiep/includes/admin/custom-post-type.php:41) in /home/fmocs1df/smarthouse.asia/DocumentRoot/wp-content/themes/doanhnghiep/includes/admin/custom-post-type.php on line 90
+
+2020-07-30T16:33:53+00:00 CRITICAL Cannot redeclare sunset_set_contact_columns() (previously declared in /home/fmocs1df/smarthouse.asia/DocumentRoot/wp-content/themes/doanhnghiep/includes/admin/custom-post-type.php:41) in /home/fmocs1df/smarthouse.asia/DocumentRoot/wp-content/themes/doanhnghiep/includes/admin/custom-post-type.php on line 90
+

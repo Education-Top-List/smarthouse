@@ -7,18 +7,22 @@ get_header();
 <div class="page-wrapper">
 	<div id="content">
 		<div class="g_content">
-			<?php 
+			<div class="wrap_video_home">
+				<h2 class="title_home">Video</h2>
+				<?php 
 			if(have_posts()):
 				while(have_posts()) : the_post();
 					the_content();
 				endwhile;
 			endif;
 			?>
+			</div>
+			
 			<div class="cat_product_home">
-				<h2 class="title_home">Sản phẩm</h2>
+				<h2 class="title_home"><?php if(get_locale()=='vi') { ?>Sản phẩm<?php }else{ ?> Products <?php }?></h2>
 				<?php 
 				$cat_args = array(
-					'orderby'    => 'name',
+					'orderby'    => 'menu_order',
 					'hide_empty' => false,
 				);
 
@@ -48,7 +52,6 @@ get_header();
 						  			<div class="textwidget">
 						  				<a href="<?php echo get_term_link($category);?>"><?php echo $category->name; ?></a>
 						  			</div>
-						  			
 						  		</div>
 							</li>
 							<?php } ?>
@@ -58,15 +61,14 @@ get_header();
 				</div>
 				<div class="certificate">
 					<div class="container">
-						<h2 class="title_home">Chứng nhận</h2>
+						<h2 class="title_home"><?php if(get_locale()=='vi') { ?>Chứng nhận<?php }else{ ?> Certificates <?php }?></h2>
 						<ul>
 							<?php
 							$args = array(  
 								'post_type' => 'certificate',
 								'post_status' => 'publish',
 								'posts_per_page' => 20, 
-								'orderby' => 'title', 
-								'order' => 'ASC'
+								'orderby' => 'date'
 							);
 
 							$loop_slide = new WP_Query( $args ); 
@@ -87,6 +89,36 @@ get_header();
 						</ul>
 					</div>
 				</div>	
+				<div class="partner_home">
+					<div class="container">
+						<h2 class="title_home"><?php if(get_locale()=='vi') { ?>Đối tác<?php }else{ ?> Certificates <?php }?></h2>
+						<ul>
+							<?php
+							$args = array(  
+								'post_type' => 'partner',
+								'post_status' => 'publish',
+								'posts_per_page' => 20, 
+								'orderby' => 'date'
+							);
+
+							$loop_slide = new WP_Query( $args ); 
+
+							while ( $loop_slide->have_posts() ) : $loop_slide->the_post(); 
+    	//echo the_title();
+								?> 
+								<li>
+									<?php $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full' ); ?>
+									<figure class="thumbnail"> 
+										<a href="<?php echo get_the_excerpt(); ?>" target="_blank"><?php the_post_thumbnail(); ?></a>
+									</figure> 
+								</li> 
+								<?php
+							endwhile;
+							wp_reset_postdata();
+							?>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

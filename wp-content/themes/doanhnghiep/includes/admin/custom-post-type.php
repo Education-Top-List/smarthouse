@@ -10,6 +10,49 @@
 */
 
 
+add_action( 'init', 'patner_custom_post_type' );
+	add_filter('manage_partner_posts_columns','partner_contact_columns');
+	add_action('manage_partner_posts_custom_column','partner_custom_column',10,2);
+
+	/* DOI TAC */
+	function patner_custom_post_type() {
+		$labels = array(
+			'name' 				=> 'Đối tác',
+			'singular_name' 	=> 'Đối tác',
+			'menu_name'			=> 'Đối tác',
+			'name_admin_bar'	=> 'Đối tác'
+		);
+
+		$args = array(
+			'labels'			=> $labels,
+			'show_ui'			=> true,
+			'show_in_menu'		=> true,
+			'capability_type'	=> 'post',
+			'hierarchical'		=> false,
+			'menu_position'		=> 26,
+			'menu_icon'			=> 'dashicons-businessman',
+			'supports'			=> array( 'title', 'thumbnail' , 'excerpt' )
+		);
+
+		register_post_type( 'partner', $args );
+
+	}
+
+	function partner_contact_columns($columns){
+		$newColumns = array();
+		$newColums['title'] = 'Title';
+		$newColums['avatar'] = 'Avatar';
+		return $newColums;
+	}
+
+	function partner_custom_column($column,$post_id){
+		switch ($column) {
+			case 'avatar':
+			echo get_the_post_thumbnail();
+			break;
+		}
+	}
+
 
 	add_action( 'init', 'certi_contact_custom_post_type' );
 	add_filter('manage_certificate_posts_columns','sunset_set_contact_columns');
@@ -56,7 +99,7 @@
 
 
 
-	/* MANG LUOI */
+	/* Slide */
 
 	add_action( 'init', 'tgslide_custom_post_type' );
 	add_filter('manage_tgslide_posts_columns','tgslide_columns');
@@ -104,3 +147,56 @@
 		}
 	}
 
+
+	/* DU AN */
+
+	add_action( 'init', 'project_smarthouse_custom_post_type' );
+	add_filter('manage_project_smarthouse_posts_columns','project_smarthouse_columns');
+	add_action('manage_project_smarthouse_posts_custom_column','project_smarthouse_custom_column',10,2);
+
+	function project_smarthouse_custom_post_type() {
+		$labels = array(
+			'name' 				=> 'Dự án',
+			'singular_name' 	=> 'Dự án',
+			'menu_name'			=> 'Dự án',
+			'name_admin_bar'	=> 'Dự án'
+		);
+
+		$args = array(
+			'labels'			=> $labels,
+			'show_in_nav_menus ' => false,
+			'show_ui'			=> true, 
+		'show_in_menu'		=> true, // in sidebar left admin
+		'capability_type'	=> 'post',
+		'has_archive' => true,
+		'hierarchical'		=> false,
+		'menu_position'		=> 24,
+		'menu_icon'			=> 'dashicons-clipboard',
+		'public' => true, // required to display permalink under title post
+		'query_var' => true,
+		'publicly_queryable' => true, // permalink
+		'supports'			=> array( 'title', 'thumbnail' , 'excerpt' , 'editor' )
+	);
+   register_taxonomy('smarthouse_project', 'project_smarthouse', array(
+        'label' => __('Chuyên mục dự án'),
+        'hierarchical' => true
+    ));
+
+		register_post_type( 'project_smarthouse', $args );
+
+	}
+
+	function project_smarthouse_columns($columns){
+		$newColumns = array();
+		$newColums['title'] = 'Title';
+		$newColums['avatar'] = 'Avatar';
+		return $newColums;
+	}
+
+	function project_smarthouse_custom_column($column,$post_id){
+		switch ($column) {
+			case 'avatar':
+			echo get_the_post_thumbnail();
+			break;
+		}
+	}

@@ -5,8 +5,20 @@ include get_template_directory().'/includes/admin/custom-post-type.php';
 include get_template_directory().'/includes/admin/aio-list-categories/aio-list-category.php';
 include get_template_directory().'/includes/frontend/woocommerce/woocommerce.php';
 include get_template_directory().'/includes/frontend/woocommerce/archive.php';
-//include get_template_directory().'/includes/frontend/woocommerce/add_meta_box.php';
+include get_template_directory().'/includes/frontend/woocommerce/add_meta_box.php';
 include get_template_directory().'/includes/frontend/woocommerce/single-product.php';
+
+add_filter( 'woocommerce_product_tabs', 'woo_reorder_tabs', 98 );
+function woo_reorder_tabs( $tabs ) {
+  $tabs['tskt_tab']['priority'] = 5; // Additional information third
+  $tabs['description']['priority'] = 10;      // Description second
+  return $tabs;
+}
+
+/**
+ * Remove "Description" Heading Title @ WooCommerce Single Product Tabs
+ */
+add_filter( 'woocommerce_product_description_heading', '__return_null' );
 
 function load_admin_style() {
   wp_register_style( 'admin_css', get_template_directory_uri() . '/css/admin.css', false, '1.0.0' );
@@ -102,7 +114,24 @@ function featured_images_setup(){
     'before_title' => '<h3 class="widget-title">',
     'after_title' => '</h3>',
   ));
-
+   register_sidebar(array(
+    'name' => 'Footer area 1 EN',
+    'id' => 'footer1_en',
+    'before_title' => '<h3 class="widget-title">',
+    'after_title' => '</h3>',
+  ));
+  register_sidebar(array(
+    'name' => 'Footer area 2 EN',
+    'id' => 'footer2_en',
+    'before_title' => '<h3 class="widget-title">',
+    'after_title' => '</h3>',
+  ));
+   register_sidebar(array(
+    'name' => 'Footer area 3 EN',
+    'id' => 'footer3_en',
+    'before_title' => '<h3 class="widget-title">',
+    'after_title' => '</h3>',
+  ));
   }
   add_action('widgets_init','our_widget_inits');
   /** Filter & Hook In Widget Before Post Content .*/
@@ -342,3 +371,29 @@ add_filter('woocommerce_cart_no_shipping_available_html', '__return_false');
 add_filter( 'woocommerce_checkout_redirect_empty_cart', '__return_false' );
 add_filter( 'woocommerce_checkout_update_order_review_expired', '__return_false' );
 
+// function to display number of posts.
+
+function wpb_get_post_views($postID){
+    $count_key = 'post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+        return "0 View";
+    }
+    return $count.' Views';
+}
+
+// function to count views.
+function wpb_set_post_views($postID) {
+    $count_key = 'post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+    }else{
+        $count++;
+        update_post_meta($postID, $count_key, $count);
+    }
+}

@@ -1,0 +1,4 @@
+2020-07-29T07:33:33+00:00 CRITICAL Cannot redeclare tg_attach_file_output() (previously declared in /home/fmocs1df/smarthouse.asia/DocumentRoot/wp-content/themes/doanhnghiep/includes/frontend/woocommerce/add_meta_box.php:117) in /home/fmocs1df/smarthouse.asia/DocumentRoot/wp-content/themes/doanhnghiep/includes/frontend/woocommerce/add_meta_box.php on line 164
+
+2020-07-29T07:33:36+00:00 CRITICAL Cannot redeclare tg_attach_file_output() (previously declared in /home/fmocs1df/smarthouse.asia/DocumentRoot/wp-content/themes/doanhnghiep/includes/frontend/woocommerce/add_meta_box.php:117) in /home/fmocs1df/smarthouse.asia/DocumentRoot/wp-content/themes/doanhnghiep/includes/frontend/woocommerce/add_meta_box.php on line 164
+

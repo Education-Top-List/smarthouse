@@ -6,93 +6,35 @@ global $product;
 <div class="page-wrapper">
 	<div class="g_content">
 		<div id="breadcrumb" class="breadcrumb">
-      <ul>
-        <li><a href="<?php echo home_url(); ?>">Trang chủ</a></li>
-        <li>Sản phẩm</li>
-        <li><?php 
-        if(is_product_category()){
+      <div class="container">
+        <ul>
+          <li><a href="<?php echo home_url(); ?>">Trang chủ</a></li>
+          <li>Sản phẩm</li>
+          <li><?php 
+          if(is_product_category()){
     // The WP_Term object for the current product category
-          $term = get_queried_object();
+            $term = get_queried_object();
 
     // Get the current term name for the product category page
-          $term_name = $term->name;
+            $term_name = $term->name;
 
     // Test output
-          echo $term->name;
-        }
-        ?></li>
-      </ul>
+            echo $term->name;
+          }
+          ?></li>
+        </ul>
+      </div>
     </div>
     <div class="product_page_wrap">
      <div class="container">
       <div class="row">
-          <div class="col-sm-3">
-            <?php
-            $taxonomy     = 'product_cat';
-            $orderby      = 'menu_order';  
-                       $show_count   = 0;      // 1 for yes, 0 for no
-                       $pad_counts   = 0;      // 1 for yes, 0 for no
-                       $hierarchical = 0;      // 1 for yes, 0 for no  
-                       $title        = '';  
-                       $empty        = 0;
-                       $args = array(
-                        'taxonomy'     => $taxonomy,
-                        'orderby'      => $orderby,
-                        'show_count'   => $show_count,
-                        'pad_counts'   => $pad_counts,
-                        'hierarchical' => $hierarchical,
-                        'title_li'     => $title,
-                        'hide_empty'   => $empty,
-
-                       );
-                       $all_categories = get_categories( $args );
-                       foreach ($all_categories as $cat) {    
-                        if($cat->category_parent == 0) {
-                          $category_id = $cat->term_id;       
-                          ?>
-                          <div class="top_menu_list_product">
-                            <div class="parent_menu_archive">
-                              <?php echo '<a href="'. get_term_link($cat->slug, 'product_cat') .'">'. $cat->name .'</a>';?>
-                              <span><i class="fa fa-angle-right" aria-hidden="true"></i></span>
-                            </div>
-                            <!-- $cat->count -->
-                            <?php
-                            $args2 = array(
-                              'taxonomy'     => $taxonomy,
-                              'child_of'     => 0,
-                              'parent'       => $category_id,
-                              'orderby'      => $orderby,
-                              'show_count'   => $show_count,
-                              'pad_counts'   => $pad_counts,
-                              'hierarchical' => $hierarchical,
-                              'title_li'     => $title,
-                              'hide_empty'   => $empty
-                            );
-                            $sub_cats = get_categories( $args2 );
-                            if($sub_cats) {
-                              ?>
-                              <ul class="sub_product_category">
-                                <?php
-                                foreach($sub_cats as $sub_category) {
-                                  echo  '<li><a href="'.get_term_link($sub_category->slug, 'product_cat')  .'">'.$sub_category->name.' </a></li>' ;
-                                }?>
-                              </ul>
-                              <?php   
-                            }
-                            ?>
-
-                          </div>
-                          <?php 
-                     } //endif
-                   }//end foreach ?>
-                 </div>
-                 <?php 
-                 if ( is_search() ) {
+       <?php 
+       if ( is_search() ) {
     //put your search results markup here (you can copy some code from archive-product.php file and also from content-product.php to create a standard markup
-                  ?>
-                  <div class="col-sm-9 list_pd_archive_woo">
-                    <?php 
-                      if ( woocommerce_product_loop() ) {
+        ?>
+        <div class="col-sm-12 list_pd_archive_woo">
+          <?php 
+          if ( woocommerce_product_loop() ) {
 
                             /**
                              * Hook: woocommerce_before_shop_loop.
@@ -114,7 +56,7 @@ global $product;
                                  */
                                 do_action( 'woocommerce_shop_loop' );
 
-                                  wc_get_template_part( 'content', 'product' );
+                                wc_get_template_part( 'content', 'product' );
                               }
                             }
 
@@ -134,13 +76,13 @@ global $product;
                              */
                             do_action( 'woocommerce_no_products_found' );
                           }
-                    ?>
-                  </div>
-                  <?php
-                 } else {
-                  ?>
-                  <div class="col-sm-9 list_pd_archive_woo">
-                    <?php
+                          ?>
+                        </div>
+                        <?php
+                      } else {
+                        ?>
+                        <div class="col-sm-12 list_pd_archive_woo">
+                          <?php
                      if ( is_shop() || is_product_category() || is_product_tag() ) { // Only run on shop archive pages, not single products or other pages
 
                       // Products per page
@@ -148,6 +90,7 @@ global $product;
                       $args = array(
                         'post_type' => 'product',
                         'posts_per_page' => 9,
+
                         'paged' => get_query_var( 'paged' ),
                         'tax_query' => array(
                           array(
@@ -171,22 +114,39 @@ global $product;
                               <div class="product_inner">
                                 <?php 
                                 $image = wp_get_attachment_image_src(get_post_thumbnail_id($products->post->ID), $size = "large");
+                                $featured = get_post_meta( $post->ID );
+                                $thuonghieu_sp = get_post_meta($post->ID,'_thuonghieu_sp',true);
                                 ?>
-                                <figure style="background:url('<?php echo $image[0]; ?>');"><a href="<?php echo the_permalink(); ?>"></a></figure>
-                                <h3><a href="<?php echo the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                                <div class="price">
-                                  <span>
-                                    <?php 
-
-                                    echo $product->get_price_html(); ?>
-                                  </span>      
-                                </div>
+                                <?php if($thuonghieu_sp || get_post_meta($post->ID, 'meta-checkbox', true) == 'yes'){ ?>
+                                <div class="trademark_pd">
+                                  <?php if($thuonghieu_sp){ ?>
+                                  <div class="name_trademark">
+                                      <span></span>
+                                      <p><?php echo $thuonghieu_sp; ?></p>
+                                  </div>
+                                  <?php }?>
+                                 <?php if(get_post_meta($post->ID, 'meta-checkbox', true) == 'yes') { ?>
+                                  <div class="made_in_italy">
+                                    <img src="<?php echo BASE_URL; ?>/images/made_italy.jpg">
+                                  </div>
+                                <?php  } ?>
                               </div>
-                            </li>
-                          <?php endwhile; ?>
-                        </ul>
-                        <?php wp_reset_postdata();
-                      endif;
+                            <?php }?>
+                              <figure style="background:url('<?php echo $image[0]; ?>');"><a href="<?php echo the_permalink(); ?>"></a></figure>
+                              <h3><a href="<?php echo the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                              <div class="price">
+                                <span>
+                                  <?php 
+
+                                  echo $product->get_price_html(); ?>
+                                </span>      
+                              </div>
+                            </div>
+                          </li>
+                        <?php endwhile; ?>
+                      </ul>
+                      <?php wp_reset_postdata();
+                    endif;
                      } else { // If not on archive page (cart, checkout, etc), do normal operations
 
                       echo 'No data';
@@ -207,8 +167,8 @@ global $product;
                 ?>
 
               </div>
-               </div>
-             </div>
-           </div>
-         </div>
-         <?php get_footer(); ?>
+            </div>
+          </div>
+        </div>
+      </div>
+      <?php get_footer(); ?>

@@ -1,0 +1,88 @@
+.social_hd{
+  float: none;
+  margin: 20px 0px 0px 0px;
+}
+.social_hd ul li{
+  display: inline-block;
+  margin: 0px 5px 0px 0px;
+}
+.social_hd ul li figure{
+  max-width: 30px;
+}
+.tg_wrap_tab{
+  margin: 60px 0px 25px 0px;
+  border:none;
+  display: block;
+  border-bottom: 1px solid #ccc;
+}
+.tg_wrap_tab ul{
+  display: table;
+  margin:0px auto;
+}
+.tg_wrap_tab li{
+  float:left;
+  margin-bottom: 1px;
+}
+.tg_wrap_tab li a{
+  background: #000;
+  color:#fff;
+  display: inline-block;
+  padding: 15px 40px;
+  font-size: 16px;
+  border-right: solid 1px #fff;
+  text-transform: uppercase;
+}
+.tg_wrap_tab li.active a{
+  background: #ff2b0a;
+  color: #fff;
+  font-weight: 700;
+}
+.woocommerce-tabs .woocommerce-Tabs-panel p{
+  font-size: 14px;
+  line-height: 22px;
+}
+.woocommerce-tabs .woocommerce-Tabs-panel table{
+  width: 100%;
+}
+.woocommerce-tabs .woocommerce-Tabs-panel table td , .woocommerce-tabs .woocommerce-Tabs-panel table td{
+  padding:10px;
+  border:1px solid #e6e6e6;
+  text-align: center;
+  font-size: 14px;
+  line-height: 22px;
+}
+.woocommerce-tabs .woocommerce-Tabs-panel table tbody>tr:first-child td{
+  background: #000;
+  color:#fff;
+}
+.woocommerce-tabs .woocommerce-Tabs-panel table tbody>tr>td:first-child{
+  text-align: left;
+}
+.woocommerce-tabs .woocommerce-Tabs-panel table tbody>tr:nth-child(2n+1){
+  background: #efefef;
+}
+.tg_info_single_pd h1{
+  color: #ff2b0a;
+  font-size: 30px;
+  margin: 0px 0px 20px 0px;
+  font-weight: 700;
+}
+.tg_price_single{
+  margin:20px 0
+}
+.tg_price_single .price{
+  font-size: 24px;
+  font-weight: bold;
+}
+.tg_price_single .price strong{
+  color:red
+}
+.tg_act_single_pd{
+  border-top:solid 2px #ebebeb;
+  padding-top:30px
+}
+.tg_act_single_pd .tg_btn_checkout,
+.tg_act_single_pd .btn_sales_location{
+  display:inline-block;
+  margin-right:20px
+}
