@@ -38,18 +38,23 @@
 			<div class="wrap_phone_hd">
 				<p><a href="tel:243 351 8837">+ 243 351 8837</a>- <a href="tel:0898 015 115">0898 015 115</a></p>
 			</div>
-			<div class="container">
 				<!-- display account top_header mobile -->
 				<span class="icon_mobile_click"><i class="fa fa-bars" aria-hidden="true"></i></span>
 				<div class="wrap_nav_logo">
 					<div class="logo_site">
-						<?php 
+						<div class='logo_w'>
+							<a href="<?php echo home_url(); ?>"><img src="<?php echo BASE_URL; ?>/images/logo_smarthouse_while.png"></a>
+						</div>
+						<div class="logo_rb">
+							<?php 
 						if(has_custom_logo()){
 							the_custom_logo();
 						}
 						else { ?> 
 							<h2><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></h2>
 						<?php } ?>
+						</div>
+						
 					</div>
 				</div>
 				<div class="wrap_f_right">
@@ -67,13 +72,20 @@
 							<div class="social_hd">
 								<ul>
 									<?php if(get_option('footer_fb')){ ?>
-										<li class="fb_ft"><a href="<?php echo get_option('footer_fb'); ?>" target="_blank"><figure><img src="<?php echo BASE_URL; ?>/images/facebook40x40.png"></figure></a></li>
-									<?php }?>
-									<?php if(get_option('footer_zalo')){ ?>
-										<li class="zalo"><a href="<?php echo get_option('footer_zalo'); ?>" target="_blank"><figure><img src="<?php echo BASE_URL; ?>/images/zalo40x40.png"></figure></a></li>
+										<li class="fb_ft"><a href="<?php echo get_option('footer_fb'); ?>" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
 									<?php }?>
 									<?php if(get_option('footer_youtube')){ ?>
-										<li class="youtube"><a href="<?php echo get_option('footer_youtube'); ?>" target="_blank"><figure><img src="<?php echo BASE_URL; ?>/images/ytb40x40.png"></figure></a></li>
+										<li class="youtube"><a href="<?php echo get_option('footer_youtube'); ?>" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+									<?php }?>
+										<?php if(get_option('footer_zalo')){ ?>
+										<li class="zalo">
+											<a href="<?php echo get_option('footer_zalo'); ?>" target="_blank">
+											<figure>
+												<img src="<?php echo BASE_URL; ?>/images/icon_zalo_hd_small.png">
+												<img src="<?php echo BASE_URL; ?>/images/icon_zalo_hd_small_black.png">
+											</figure>
+										</a>
+										</li>
 									<?php }?>
 								</ul>
 							</div>
@@ -82,8 +94,6 @@
 					
 
 				</div>
-				
-			</div>
 		</div>
 		<?php if(is_front_page() && !is_home()) { ?>
 			<div class="wrap_header_slide">
@@ -129,6 +139,33 @@
 						?>
 					</ul>
 				</div>	
+			</div>
+			<div class="wrap_video_hd">
+				<div class="row">
+						<ul>
+							<?php
+							$args = array(  
+								'post_type' => 'videos_home',
+								'post_status' => 'publish',
+								'posts_per_page' => 3, 
+								'orderby' => 'date'
+							);
+							$loop_slide = new WP_Query( $args ); 
+
+							while ( $loop_slide->have_posts() ) : $loop_slide->the_post(); 
+								?> 
+								<li class="col-sm-4">
+									<?php $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full' ); ?>
+									<figure class="thumbnail"> 
+										<a href="<?php echo get_the_excerpt(); ?>" target="_blank"><?php the_post_thumbnail(); ?></a>
+									</figure> 
+								</li> 
+								<?php
+							endwhile;
+							wp_reset_postdata();
+							?>
+						</ul>
+					</div>
 			</div>
 		<?php }?>
 	</header>

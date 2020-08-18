@@ -23,12 +23,15 @@ function thuonghieu_sp_output(){
  <input type="text" class="iptext_adm" id="thuonghieu_sp" name="thuonghieu_sp" value="<?php echo $thuonghieu_sp;?>" />
   <?php
 }
-function thachpham_thongtin_save( $post_id )
+function thuonghieu_sp_save( $post_id )
 {
- $thuonghieu_sp = sanitize_text_field( $_POST['thuonghieu_sp'] );
- update_post_meta( $post_id, '_thuonghieu_sp', $thuonghieu_sp );
+  if(isset($_POST['thuonghieu_sp'])){
+    $thuonghieu_sp = sanitize_text_field($_POST['thuonghieu_sp'] );
+    update_post_meta( $post_id, '_thuonghieu_sp', $thuonghieu_sp );
+  }
 }
-add_action( 'save_post', 'thachpham_thongtin_save' );
+add_action( 'save_post', 'thuonghieu_sp_save' );
+
 //  TAB KHUYEN CAO
 if ( ! function_exists( 'tskt_custom_content_meta_box' ) ){
   function tskt_custom_content_meta_box( $post ){

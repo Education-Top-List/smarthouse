@@ -200,3 +200,52 @@ add_action( 'init', 'patner_custom_post_type' );
 			break;
 		}
 	}
+
+	/* Video home */
+
+	add_action( 'init', 'videos_home_custom_post_type' );
+	add_filter('manage_videos_home_posts_columns','videos_home_columns');
+	add_action('manage_videos_home_posts_custom_column','videos_home_custom_column',10,2);
+
+	function videos_home_custom_post_type() {
+		$labels = array(
+			'name' 				=> 'Videos Home',
+			'singular_name' 	=> 'Videos Home',
+			'menu_name'			=> 'Videos Home',
+			'name_admin_bar'	=> 'Videos Home'
+		);
+
+		$args = array(
+			'labels'			=> $labels,
+			'show_in_nav_menus ' => false,
+			'show_ui'			=> true, 
+		'show_in_menu'		=> true, // in sidebar left admin
+		'capability_type'	=> 'post',
+		'has_archive' => true,
+		'hierarchical'		=> false,
+		'menu_position'		=> 24,
+		'menu_icon'			=> 'dashicons-clipboard',
+		'public' => true, // required to display permalink under title post
+		'query_var' => true,
+		'publicly_queryable' => true, // permalink
+		'supports'			=> array( 'title', 'thumbnail' , 'excerpt' )
+	);
+
+		register_post_type( 'videos_home', $args );
+
+	}
+
+	function videos_home_columns($columns){
+		$newColumns = array();
+		$newColums['title'] = 'Title';
+		$newColums['avatar'] = 'Avatar';
+		return $newColums;
+	}
+
+	function videos_home_custom_column($column,$post_id){
+		switch ($column) {
+			case 'avatar':
+			echo get_the_post_thumbnail();
+			break;
+		}
+	}

@@ -34,8 +34,9 @@ body{
     padding: 0px;
 }
 .container{
-     max-width: 1180px;
+     max-width: 1200px;
      margin:0px auto;
+     width: 100%;
 }
 img{
      max-width: 100%;
@@ -122,6 +123,9 @@ input:focus::-webkit-input-placeholder , textarea:focus::-webkit-input-placehold
   left: 0px;
   width: 100%;
   z-index: 99;
+  background: #1c2023;
+}
+.top_header.fixed_hd{
   background: #fff;
 }
 #page_wrapper{
@@ -542,6 +546,10 @@ article.post{
 .wrap_nav_logo{
      display: table;
      float:left;
+     position: absolute;
+     left: 50%;
+     top: 50%;
+     transform: translate(-50%,-50%);
 }
 .list_post_item .thumbnail{
      max-width: 300px;
@@ -674,10 +682,8 @@ article.post{
 }
 /* CSS HEADER */
 .logo_site{
-     float:left;
-     transition: all 0.3s;
-     margin: 20px 0px;
-     max-width: 200px;
+     max-width: 250px;
+     width: 100%;
 }
 .logo_site img{
      max-width: 100%;
@@ -694,6 +700,25 @@ article.post{
 .wrap_f_right .social_hd ul li {
   margin:0px 0px 0px 5px;
 }
+.wrap_f_right .social_hd ul li.zalo figure>img:nth-child(1){
+  display: block;
+}
+.wrap_f_right .social_hd ul li.zalo figure>img:nth-child(2){
+  display: none;
+}
+.top_header.fixed_hd .wrap_f_right .social_hd ul li.zalo figure>img:nth-child(1){
+  display: none;
+}
+.top_header.fixed_hd .wrap_f_right .social_hd ul li.zalo figure>img:nth-child(2){
+  display: block;
+}
+.wrap_f_right ul li i.fa{
+  color:#fff;
+}
+.top_header.fixed_hd ul li i.fa{
+  color:#000;
+}
+.top_header.fixed_hd ul li
 .search_header{
      float: left;
      margin: 21px 30px 0px 0px;
@@ -1599,6 +1624,45 @@ body.search-results .title_header strong{
 /* end page-template-page-template-lienhe */
 
 /* css rau*/
+.wrap_video_hd ul li figure{
+  height: 450px;
+}
+.wrap_video_hd ul li {
+  padding:0px;
+}
+.wrap_video_hd .row{
+  margin:0px;
+}
+.logo_rb{
+  display: none;
+}
+.logo_w{
+  display: block;
+}
+.top_header.fixed_hd .logo_rb{
+  display: block;
+} 
+.top_header.fixed_hd .logo_w{
+  display: none;
+} 
+.wrap_phone_hd{
+  float:left;
+  margin: 33px 0px 28px 30px;
+  position: relative;
+  padding: 0px 0px 0px 21px;
+}
+.wrap_phone_hd::before{
+  content:url(../images/icon_phone_hd.png);
+  position: absolute;
+  top: -2px;
+  left: 0px;
+}
+.wrap_phone_hd a{
+  color:#fff;
+}
+.top_header.fixed_hd .wrap_phone_hd a{
+  color:#000;
+}
 .wrap_header_slide{
   position: relative;
 }
@@ -1752,6 +1816,9 @@ body.search-results .title_header strong{
      position: relative;
      z-index: 1;
 }
+.slide_hd .slick-slider{
+  margin:0px !important;
+}
 .slide_hd::before{
   position: absolute;
   content:"";
@@ -1770,7 +1837,7 @@ body.search-results .title_header strong{
      border:1px solid #e6e6e6;
 }
 .tg_language{
-     float:right;
+     float: left;
      margin: 10px 0px 12px 10px;
 }
 .tg_language ul li{
@@ -2107,10 +2174,7 @@ body.search-results .title_header strong{
 .wrap_f_right{
   float:right;
 }
-.wrap_f_right .social_nav_hd{
-  clear: both;
-  display: table;
-}
+.wrap_f_right .social_nav_hd{float: right;}
 #cabins_page .textwidget p{
   font-size: 14px;
   line-height: 22px;

@@ -8,7 +8,6 @@ get_header();
 	<div id="content">
 		<div class="g_content">
 			<div class="wrap_video_home">
-				<h2 class="title_home">Video</h2>
 				<?php 
 			if(have_posts()):
 				while(have_posts()) : the_post();
@@ -104,7 +103,6 @@ get_header();
 							$loop_slide = new WP_Query( $args ); 
 
 							while ( $loop_slide->have_posts() ) : $loop_slide->the_post(); 
-    	//echo the_title();
 								?> 
 								<li>
 									<?php $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full' ); ?>
