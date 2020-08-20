@@ -22,7 +22,7 @@
 
 <body <?php body_class() ?>>
 	<div class="bg_opacity"></div>
-	<?php if ( wp_is_mobile() ) { ?>
+
 		<div id="menu_mobile_full">
 			<nav class="mobile-menu">
 				<p class="close_menu"><span><i class="fa fa-times" aria-hidden="true"></i></span></p>
@@ -32,7 +32,7 @@
 				<?php wp_nav_menu($args);?>
 			</nav>
 		</div>
-	<?php }?>
+
 	<header class="header">
 		<div class="top_header">
 			<div class="wrap_phone_hd">
@@ -69,26 +69,7 @@
 					</div>
 					<div class="social_nav_hd">
 						<?php if(get_option('footer_fb')){ ?>
-							<div class="social_hd">
-								<ul>
-									<?php if(get_option('footer_fb')){ ?>
-										<li class="fb_ft"><a href="<?php echo get_option('footer_fb'); ?>" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-									<?php }?>
-									<?php if(get_option('footer_youtube')){ ?>
-										<li class="youtube"><a href="<?php echo get_option('footer_youtube'); ?>" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
-									<?php }?>
-										<?php if(get_option('footer_zalo')){ ?>
-										<li class="zalo">
-											<a href="<?php echo get_option('footer_zalo'); ?>" target="_blank">
-											<figure>
-												<img src="<?php echo BASE_URL; ?>/images/icon_zalo_hd_small.png">
-												<img src="<?php echo BASE_URL; ?>/images/icon_zalo_hd_small_black.png">
-											</figure>
-										</a>
-										</li>
-									<?php }?>
-								</ul>
-							</div>
+						       <?php echo do_shortcode('[social_ft]'); ?>
 						<?php }?> 
 					</div>
 					

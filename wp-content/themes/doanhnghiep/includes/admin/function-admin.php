@@ -58,19 +58,26 @@ function myshortcode(){
 	ob_start();
 	if(get_option('footer_fb') || get_option('footer_zalo') || get_option('footer_youtube') || get_option('footer_insta') ){
 		?>
-		<div class="social_hd">
-			<ul>
-				<?php if(get_option('footer_fb')){ ?>
-					<li class="fb_ft"><a href="<?php echo get_option('footer_fb'); ?>" target="_blank"><figure><img src="<?php echo BASE_URL; ?>/images/facebook40x40.png"></figure></a></li>
-				<?php }?>
-				<?php if(get_option('footer_zalo')){ ?>
-					<li class="zalo"><a href="https://zalo.me/<?php echo get_option('footer_zalo'); ?>" target="_blank"><figure><img src="<?php echo BASE_URL; ?>/images/zalo40x40.png"></figure></a></li>
-				<?php }?>
-				<?php if(get_option('footer_youtube')){ ?>
-					<li class="youtube"><a href="<?php echo get_option('footer_youtube'); ?>" target="_blank"><figure><img src="<?php echo BASE_URL; ?>/images/ytb40x40.png"></figure></a></li>
-				<?php }?>
-			</ul>
-		</div>	
+			<div class="social_hd">
+								<ul>
+									<?php if(get_option('footer_fb')){ ?>
+										<li class="fb_ft"><a href="<?php echo get_option('footer_fb'); ?>" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+									<?php }?>
+									<?php if(get_option('footer_youtube')){ ?>
+										<li class="youtube"><a href="<?php echo get_option('footer_youtube'); ?>" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+									<?php }?>
+										<?php if(get_option('footer_zalo')){ ?>
+										<li class="zalo">
+											<a href="<?php echo get_option('footer_zalo'); ?>" target="_blank">
+											<figure>
+												<img src="<?php echo BASE_URL; ?>/images/icon_zalo_hd_small.png">
+												<img src="<?php echo BASE_URL; ?>/images/icon_zalo_hd_small_black.png">
+											</figure>
+										</a>
+										</li>
+									<?php }?>
+								</ul>
+						</div>	
 		<?php
 	}
 	return ob_get_clean();

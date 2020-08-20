@@ -2,43 +2,13 @@
 		<i class="fa fa-angle-up" aria-hidden="true"></i>	
 	</div>			
 	<footer class="footer">
-		<div class="container">
-			<div class="row">
-				<?php if(get_locale()=='vi') { ?>
-				<?php if(is_active_sidebar('footer1')){ ?>
-					<div class="col-sm-4">
-						<?php dynamic_sidebar('footer1'); ?>
-					</div>
-				<?php }?>
-				<?php if(is_active_sidebar('footer2')){ ?>
-					<div class="col-sm-4">
-						<?php dynamic_sidebar('footer2'); ?>
-					</div>
-				<?php }?>
-				<?php if(is_active_sidebar('footer3')){ ?>
-					<div class="col-sm-4">
-						<?php dynamic_sidebar('footer3'); ?>
-					</div>
-				<?php }?>
-			<?php }else {?>
-					<?php if(is_active_sidebar('footer1_en')){ ?>
-					<div class="col-sm-4">
-						<?php dynamic_sidebar('footer1_en'); ?>
-					</div>
-				<?php }?>
-				<?php if(is_active_sidebar('footer2_en')){ ?>
-					<div class="col-sm-4">
-						<?php dynamic_sidebar('footer2_en'); ?>
-					</div>
-				<?php }?>
-				<?php if(is_active_sidebar('footer3_en')){ ?>
-					<div class="col-sm-4">
-						<?php dynamic_sidebar('footer3_en'); ?>
-					</div>
-				<?php }?>
-				<?php }?>
-			</div>
-		</div>
+		<?php 
+			$post = get_post(549); // specific post
+			$the_content = apply_filters('the_content', $post->post_content);
+			if ( !empty($the_content) ) {
+				echo $the_content;
+			}
+		?>
 	</footer>
 	<?php if(get_option('phone')){ ?>
 	<div class="phonering-alo-phone phonering-alo-green phonering-alo-show" id="phonering-alo-phoneIcon">

@@ -90,12 +90,11 @@ if($term_cat_id == 16 || $term_cat_id == 41  ){
 	<div class="benefit_single">
 		<?php 
 		if(get_locale()=='vi'){
-			$my_id = 273;
-			$post_id_benefit = get_post($my_id);
-			$content = $post_id_benefit->post_content;
-			$content = apply_filters('the_content', $content);
-			$content = str_replace(']]>', ']]>', $content);
-			echo $content;
+		    $post = get_post(273); // specific post
+			$the_content = apply_filters('the_content', $post->post_content);
+			if ( !empty($the_content) ) {
+				echo $the_content;
+			}
 		}
 		else{
 			$my_id = 291;

@@ -1,0 +1,22 @@
+2020-08-20T08:16:57+00:00 CRITICAL Uncaught Error: Call to undefined function my_trim_function() in C:\xampp\htdocs\smarthouse\wp-content\themes\doanhnghiep\woocommerce\content-single-product.php:95
+Stack trace:
+#0 C:\xampp\htdocs\smarthouse\wp-includes\template.php(724): require()
+#1 C:\xampp\htdocs\smarthouse\wp-content\plugins\woocommerce\includes\wc-core-functions.php(283): load_template('C:\\xampp\\htdocs...', false)
+#2 C:\xampp\htdocs\smarthouse\wp-content\themes\doanhnghiep\woocommerce\single-product.php(39): wc_get_template_part('content', 'single-product')
+#3 C:\xampp\htdocs\smarthouse\wp-includes\template-loader.php(78): include('C:\\xampp\\htdocs...')
+#4 C:\xampp\htdocs\smarthouse\wp-blog-header.php(19): require_once('C:\\xampp\\htdocs...')
+#5 C:\xampp\htdocs\smarthouse\index.php(17): require('C:\\xampp\\htdocs...')
+#6 {main}
+  thrown in C:\xampp\htdocs\smarthouse\wp-content\themes\doanhnghiep\woocommerce\content-single-product.php on line 95
+
+2020-08-20T08:20:58+00:00 CRITICAL Uncaught Error: Call to a member function get_id() on string in C:\xampp\htdocs\smarthouse\wp-content\themes\doanhnghiep\woocommerce\content-single-product.php:35
+Stack trace:
+#0 C:\xampp\htdocs\smarthouse\wp-includes\template.php(724): require()
+#1 C:\xampp\htdocs\smarthouse\wp-content\plugins\woocommerce\includes\wc-core-functions.php(283): load_template('C:\\xampp\\htdocs...', false)
+#2 C:\xampp\htdocs\smarthouse\wp-content\themes\doanhnghiep\woocommerce\single-product.php(39): wc_get_template_part('content', 'single-product')
+#3 C:\xampp\htdocs\smarthouse\wp-includes\template-loader.php(78): include('C:\\xampp\\htdocs...')
+#4 C:\xampp\htdocs\smarthouse\wp-blog-header.php(19): require_once('C:\\xampp\\htdocs...')
+#5 C:\xampp\htdocs\smarthouse\index.php(17): require('C:\\xampp\\htdocs...')
+#6 {main}
+  thrown in C:\xampp\htdocs\smarthouse\wp-content\themes\doanhnghiep\woocommerce\content-single-product.php on line 35
+
