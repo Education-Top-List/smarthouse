@@ -72,6 +72,7 @@ function myshortcode(){
 											<figure>
 												<img src="<?php echo BASE_URL; ?>/images/icon_zalo_hd_small.png">
 												<img src="<?php echo BASE_URL; ?>/images/icon_zalo_hd_small_black.png">
+												<img class="img_zl_ft" src="<?php echo BASE_URL; ?>/images/icon_zalo_ft.png">
 											</figure>
 										</a>
 										</li>

@@ -7,6 +7,7 @@ include get_template_directory().'/includes/frontend/woocommerce/woocommerce.php
 include get_template_directory().'/includes/frontend/woocommerce/archive.php';
 include get_template_directory().'/includes/frontend/woocommerce/add_meta_box.php';
 include get_template_directory().'/includes/frontend/woocommerce/single-product.php';
+include get_template_directory().'/includes/admin/shortcode.php';
 
 add_filter( 'woocommerce_product_tabs', 'woo_reorder_tabs', 98 );
 function woo_reorder_tabs( $tabs ) {

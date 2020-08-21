@@ -90,7 +90,7 @@ get_header();
 				</div>	
 				<div class="partner_home">
 					<div class="container">
-						<h2 class="title_home"><?php if(get_locale()=='vi') { ?>Đối tác<?php }else{ ?> Certificates <?php }?></h2>
+						<h2 class="title_home"><?php if(get_locale()=='vi') { ?>Đối tác của chúng tổi<?php }else{ ?> Partners <?php }?></h2>
 						<ul>
 							<?php
 							$args = array(  
